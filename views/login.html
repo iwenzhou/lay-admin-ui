@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lay Admin Ui 管理平台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../static/febs/css/febs.css" media="all">
+    <link rel="stylesheet" href="../static/febs/css/login.css" media="all">
+    <link rel="icon" href="../static/febs/images/favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+<div id="febs-login" lay-title="登录">
+    <div class="login-wrap">
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4 febs-tc">
+                    <div class="layui-logo"><span><b>Lay Admin Ui</b></span></div>
+                </div>
+                <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4" id="login-div">
+                    <div class="layui-form" lay-filter="login-form">
+                        <div class="layui-anim layui-anim-upbit">
+                            <ul class="login-type-tab">
+                                <li class="active">系统登录</li>
+                            </ul>
+                            <div class="normal-login-form">
+                                <div class="layui-form-item">
+                                    <label class="layui-icon label-icon layui-icon-username"></label>
+                                    <input type="text" name="username" lay-verify="required"
+                                           placeholder="用户名" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-item password-block">
+                                    <label class="layui-icon label-icon layui-icon-password"></label>
+                                    <input type="password" name="password" lay-verify="required"
+                                           placeholder="密码" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-row">
+                                        <div class="layui-col-xs7">
+                                            <label class="layui-icon label-icon layui-icon-vercode"></label>
+                                            <input type="text" maxlength="4" name="verifyCode" lay-verify="required"
+                                                   placeholder="验证码" class="layui-input" autocomplete="off">
+                                        </div>
+                                        <div class="layui-col-xs5">
+                                            <img class="codeimg" id="codeimg"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" style="margin-top: -10px;">
+                                    <input type="checkbox" name="rememberMe" title="记住我" lay-skin="primary">
+                                </div>
+                                <div class="layui-form-item">
+                                    <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit
+                                            lay-filter="login-submit" id="login">
+                                        <i style="display: none"
+                                           class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i>
+                                        立即登录
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="layui-form-item febs-tr">
+                                <a id="regist-href">注册账号</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4 febs-hide" id="regist-div">
+                    <div class="layui-form" lay-filter="regist-form">
+                        <div class="layui-anim layui-anim-upbit">
+                            <ul class="login-type-tab">
+                                <li class="active">账号注册</li>
+                            </ul>
+                            <div class="normal-login-form">
+                                <div class="layui-form-item">
+                                    <label class="layui-icon label-icon layui-icon-username"></label>
+                                    <input type="text" name="username" minlength="2" maxlength="10" lay-verify="range"
+                                           placeholder="用户名" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-item password-block">
+                                    <label class="layui-icon label-icon layui-icon-password"></label>
+                                    <input type="password" name="password" minlength="6" lay-verify="range"
+                                           placeholder="密码" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-item password-block">
+                                    <label class="layui-icon label-icon layui-icon-password"></label>
+                                    <input type="password" name="passwordB" lay-verify="required"
+                                           placeholder="密码确认" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-item">
+                                    <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit
+                                            lay-filter="regist-submit" id="regist">
+                                        <i style="display: none"
+                                           class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i>
+                                        立即注册
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item febs-tr">
+                            <a id="login-href">已有账号？马上登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../static/layui/layui.js"></script>
+<script src="../static/common/common.js"></script>
+<script src="../static/jquery/jquery-3.4.1.js"></script>
+<script src="../static/mockjax/jquery.mockjax.js"></script>
+
+<script src="../static/common/mockjax.js"></script>
+
+<script type="text/javascript">
+    var ctx = getRootPath();
+
+    layui.extend({
+        validate: '../static/febs/lay/modules/validate'
+    }).use(['form', 'layer', 'validate'], function (form, layer) {
+        var $ = layui.jquery,
+            validate = layui.validate,
+            $view = $('#febs-login'),
+            type = 'login',
+            $loginDiv = $view.find('#login-div'),
+            $registDiv = $view.find('#regist-div');
+
+        form.verify(validate);
+        form.render();
+        initCode();
+
+        //提交登录表单
+        form.on('submit(login-submit)', function (data) {
+            var loading = $(this).find('.layui-icon');
+            if (loading.is(":visible")) return;
+            loading.show();
+
+            // 登录请求
+            $.post(ctx + 'login', data.field, function (r) {
+                if (r.code === 200) {
+                    location.href = ctx + '/views/index.html';
+                } else {
+                    layer.msg(r.message);
+                    loading.hide();
+                    initCode();
+                }
+            });
+
+            return false;
+        });
+
+        //提交注册表单
+        form.on('submit(regist-submit)', function (data) {
+            if (data.field.password !== data.field.passwordB) {
+                layer.msg('两次密码输入不一致！');
+                return;
+            }
+            var loading = $(this).find('.layui-icon');
+            if (loading.is(":visible")) return;
+            loading.show();
+            $.post(ctx + 'regist', data.field, function (r) {
+                if (r.code === 200) {
+                    layer.msg('注册成功，请登录');
+                    loading.hide();
+                    $view.find('#login-href').trigger('click');
+                } else {
+                    layer.msg(r.message);
+                    loading.hide();
+                }
+            });
+            return false;
+        });
+
+        function initCode() {
+            // $view.find('#codeimg').attr("src", ctx + "images/captcha?data=" + new Date().getTime());
+            $view.find('#codeimg').attr("src", "data:image/png;base64,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");
+        }
+
+        $view.find('#codeimg').on('click', function () {
+            initCode();
+        });
+
+        $view.find('#regist-href').on('click', function () {
+            resetForm();
+            type = 'regist';
+            $loginDiv.hide();
+            $registDiv.show();
+        });
+
+        $view.find('#login-href').on('click', function () {
+            resetForm();
+            type = 'login';
+            $loginDiv.show();
+            $registDiv.hide();
+        });
+
+        function resetForm() {
+            $registDiv.find('input[name="username"]').val('')
+                .end().find('input[name="password"]').val('')
+                .end().find('input[name="passwordB"]').val('');
+
+            $loginDiv.find('input[name="username"]').val('')
+                .end().find('input[name="password"]').val('')
+                .end().find('input[name="verifyCode"]').val('');
+        }
+
+        $(document).on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                if (type === 'login')
+                    $view.find('#login').trigger("click");
+                if (type === 'regist')
+                    $view.find('#regist').trigger("click");
+            }
+        });
+    });
+</script>
+</body>
+</html>
